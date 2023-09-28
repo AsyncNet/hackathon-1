@@ -162,7 +162,7 @@ from (
            ,[VIRTUAL_ATTENDANCE_YN])
      VALUES
            (@confno
-           ,10008 --?
+           ,(SELECT MAX([CONF_TARGET_NO]) + 1 FROM [CONF_TARGET] WHERE [CONF_NO] = @confno)
            ,1
            ,10
            ,'Y'
