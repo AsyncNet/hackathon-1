@@ -87,6 +87,156 @@ from (
 ) x
 ";
 
+		const string insertsql = @"INSERT INTO [dbo].[CONF_TARGET]
+           ([CONF_NO]
+           ,[CONF_TARGET_NO]
+           ,[DIETARY_REQUIREMENT_NO]
+           ,[SORT_NO]
+           ,[ALLOW_REQUEST_YN]
+           ,[APPROVED]
+           ,[CHECKIN_YN]
+           ,[CONTACT_TYPE]
+           ,[GROUP_AVAILABLE_YN]
+           ,[ICONF_REG_YN]
+           ,[INTERNAL_STATUS]
+           ,[INVITE_STATUS]
+           ,[ONE_ON_ONE_YN]
+           ,[PREFERRED_METHOD_OF_CONTACT]
+           ,[PRESENTATION_YN]
+           ,[PRINT_BADGE_YN]
+           ,[REG_QUESTION_SEND_EMAIL_YN]
+           ,[REG_STATUS]
+           ,[REGISTRATION_TYPE]
+           ,[SALES_SEND_EMAIL_YN]
+           ,[SEND_EMAIL_YN]
+           ,[WALK_IN_YN]
+           ,[RR_ID]
+           ,[REGISTRANT_CONTACT_ID]
+           ,[COVERAGE_USER_ID]
+           ,[INVITED_BY_USER_ID]
+           ,[SCHEDULE_SENT_BY_USER_ID]
+           ,[LOCALE_ID]
+           ,[COVERAGE_USER_NAME]
+           ,[INVITED_BY_USER_NAME]
+           ,[REGISTRANT_CONT_FIRST_NAME]
+           ,[REGISTRANT_CONT_LAST_NAME]
+           ,[REGISTRANT_CONTACT_NAME]
+           ,[REGISTRANT_CONTACT_NAME_UPPER]
+           ,[RR_NAME]
+           ,[SCHEDULE_SENT_BY_USER_NAME]
+           ,[CREATED_DATE]
+           ,[LAST_CHANGED_BY]
+           ,[LAST_CHANGED_DATE]
+           ,[CM_CONTACT_TYPE_NO]
+           ,[INVITE_EMAIL_SENT_DATE]
+           ,[LAST_BADGE_PRINT_DATE]
+           ,[LAST_EMAIL_SENT_DATE]
+           ,[LAST_INVITE_DATE]
+           ,[LAST_REG_STATUS_DATE]
+           ,[LAST_SCHEDULE_SENT_DATE]
+           ,[BADGE_NAME]
+           ,[EMAIL_ADDRESS]
+           ,[TITLE]
+           ,[PERSONAL_TITLE]
+           ,[LAST_QUEST_RESPONSE_SENT_DATE]
+           ,[ENTRY_SYSTEM_ID]
+           ,[LAST_CHECKIN_CHANGED]
+           ,[LAST_CHECKIN_CHANGED_BY]
+           ,[LAST_AVAIL_CHANGED]
+           ,[CM_CONTACT_CATEGORY_NO]
+           ,[CONF_TARGET_ID]
+           ,[PORTFOLIO_NO]
+           ,[CORP_CLIENT_CONTACT_NO]
+           ,[CAPITAL_MARKET_NO]
+           ,[MARKET_TYPE]
+           ,[CREATED_BY]
+           ,[CONF_COMPANY_ID]
+           ,[CM_TRANSLATION_TYPE_NO]
+           ,[C_LEVEL_YN]
+           ,[SYNC_COMPANY_ASSISTANTS_YN]
+           ,[RIXML_CONTACT_ROLE_ID]
+           ,[FIRST_REG_DATE]
+           ,[LANGUAGES]
+           ,[LANGUAGES_LC]
+           ,[TRANSLATOR_YN]
+           ,[VIRTUAL_ATTENDANCE_YN])
+     VALUES
+           (@confno
+           ,10008 --?
+           ,1
+           ,10
+           ,'Y'
+           ,'N'
+           ,'N'
+           ,'G'
+           ,'N'
+           ,'N'
+           ,'I'
+           ,'N'
+           ,'N'
+           ,'Y'
+           ,'N'
+           ,'N'
+           ,'Y'
+           ,'R'
+           ,'I'
+           ,'Y'
+           ,'N'
+           ,'N'
+           ,''
+           ,'90766'
+           ,''
+           ,''
+           ,''
+           ,'1033'
+           ,''
+           ,''
+           ,'John'
+           ,'Smith'
+           ,'John Smith'
+           ,'JOHN SMITH' 
+           ,''
+           ,''
+           ,getdate()
+           ,'ADMIN'
+           ,getdate()
+           ,1
+           ,NULL
+           ,NULL
+           ,NULL
+           ,NULL
+           ,getdate()
+           ,NULL
+           ,NULL
+           ,@email
+           ,''
+           ,NULL
+           ,NULL
+           ,'CM'
+           ,NULL
+           ,NULL
+           ,NULL
+           ,0
+           ,58997 --???
+           ,NULL -- PROFILE_NO
+           ,NULL
+           ,NULL
+           ,7
+           ,'ADMIN'
+           ,30984--????
+           ,NULL
+           ,'N'
+           ,'N'
+           ,NULL
+           ,NULL
+           ,NULL
+           ,NULL
+           ,'N'
+           ,NULL);
+
+
+";
+
         private const string ConnectionString = "Server=WEUSHDXDB1.secure.dlgroup.com,5551\\DXSHARED;Database=dx_PIE_PIE1_main;User Id=BuildAdmin;Password=BuildAdmin;TrustServerCertificate=True";
 
         public IEnumerable<ConferenceInfo> Read(int confNo)
@@ -99,7 +249,7 @@ from (
 
                 SqlCommand cmd = new SqlCommand(sqltemplate, conn);
 
-				cmd.Parameters.Add(new SqlParameter("@confno", 875));
+                cmd.Parameters.Add(new SqlParameter("@confno", 875));
 
                 var reader = cmd.ExecuteReader();
 
@@ -114,6 +264,24 @@ from (
                 }
             }
             return conference;
+        }
+
+        public void AddTarget(int ConfId, IEnumerable<string> emails)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+
+                foreach(var e in emails)
+                {
+                    SqlCommand cmd = new SqlCommand(insertsql, conn);
+
+                    cmd.Parameters.Add(new SqlParameter("@confno", 875));
+                    cmd.Parameters.Add(new SqlParameter("@email", 875));
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

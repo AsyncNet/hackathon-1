@@ -17,11 +17,12 @@
             // - parse response and read conference name
 
             // - send another request to AI with conference name
-            
+
             // - parse response to extract emails
+            var emails = new List<string> { "pawel.maczynski@iongroup.com" };
 
             // - add targets to target conference (only emails without creating a reference to PORTFOLIO table) - check if email exists
-
+            dbClient.AddTarget(875, emails);
         }
     }
 }
