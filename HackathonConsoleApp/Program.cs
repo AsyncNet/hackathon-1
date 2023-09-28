@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             // - read conference id
             //var confNo = args[1];
@@ -12,7 +12,8 @@
             var conference = dbClient.Read(875).Single();
 
             // - send data to get closest conference
-
+            var aiClient = new AiClient();
+            await aiClient.Execute();
             // - parse response and read conference name
 
             // - send another request to AI with conference name
